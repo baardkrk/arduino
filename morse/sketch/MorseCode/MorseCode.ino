@@ -3,6 +3,12 @@
   
   A small program that can blink an arduino LED in
   morse code. 
+  Sticking to convention where:
+    - A dot is a single time unit
+    - A dash is three time units 
+    - Inter-element gap is one time unit
+    - Short gap between letters are three time units
+    - Medium gap between words are seven time units
 
   Author:
   Bård-Kristian Krohg
@@ -12,25 +18,21 @@
 */
 
 
+int TIME_UNIT = 125;
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
 
-void long_on() {
+void 
+blink(int a)
+{
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
+  delay(TIME_UNIT * ((a > 0) ? 3 : 1));
   digitalWrite(LED_BUILTIN, LOW);
-  delay(500);
-}
-
-
-void short_on() {
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(500);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(500);
-}
+  delay(TIME_UNIT);
+} 
 
 
 void 
@@ -39,20 +41,16 @@ blink_sequence(short int a)
   bool start_sequence = false;
   for (int i = (sizeof(short int) * 8) -1; i >= 0; i--) {
     if (start_sequence) {
-      if (a & (1u << i)) {
-        long_on();
-      } else {
-        short_on();
-      }
+      blink(a & (1u << i) ? 1 : 0);
     } else {
       start_sequence = a & (1u << i) ? true : false;
     }
   }
-  delay(500);
+  delay(TIME_UNIT * 2);  // Between letters is 3
 }
 
 
 void loop() {
   blink_sequence(morse_sequence(';'));
-  delay(100);
+  delay(TIME_UNIT * 4);  // Between words 7
 }
