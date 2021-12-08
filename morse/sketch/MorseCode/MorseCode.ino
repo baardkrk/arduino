@@ -16,6 +16,7 @@
   
   https://baardkrk.github.io/
 */
+#include <string.h>
 
 
 int TIME_UNIT = 125;
@@ -50,7 +51,20 @@ blink_sequence(short int a)
 }
 
 
+void 
+blink_sentence(char *s)
+{
+  int l = strlen(s);
+  for (int i = 0; i < l; i++) {
+    if (s[i] == ' ') { delay(TIME_UNIT * 4); }  // Between words is 7
+    else { blink_sequence(morse_sequence(s[i])); }
+  }
+}
+
+
 void loop() {
-  blink_sequence(morse_sequence(';'));
-  delay(TIME_UNIT * 4);  // Between words 7
+  char *s = "^Have you seen Dwights new tie?$";
+  blink_sentence(s);
+  // blink_sequence(morse_sequence(';'));
+  // delay(TIME_UNIT * 4);  // Between words 7
 }
