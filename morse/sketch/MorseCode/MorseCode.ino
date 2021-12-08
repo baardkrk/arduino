@@ -63,7 +63,7 @@ blink_sentence(char *s)
 
 
 void loop() {
-  char *s = "^Have you seen Dwights new tie?$";
+  char *s = "^Automatic upstream updates$";
   blink_sentence(s);
   // blink_sequence(morse_sequence(';'));
   // delay(TIME_UNIT * 4);  // Between words 7
